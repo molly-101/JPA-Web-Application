@@ -24,7 +24,7 @@ public class OrderRepository {
     }
 
     //동적 쿼리가 들어가게됩니다. -> 원하는 로직: 검색하면 그거 맞춰서 order list 를 가져와주는 메서드
-    public List<Order> findAllByString(OrderSearch orderSearch){
+    public List<Order> findAll(OrderSearch orderSearch){
         String jpql = "select o from Order o join o.member m";
         boolean isFirstCondition = true;
 
