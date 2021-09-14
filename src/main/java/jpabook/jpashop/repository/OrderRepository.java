@@ -1,12 +1,17 @@
 package jpabook.jpashop.repository;
 
+import jpabook.jpashop.api.OrderSimpleApiController;
+import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderStatus;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -67,5 +72,14 @@ public class OrderRepository {
         return em.createQuery(
                 "SELECT o FROM Order o" + " JOIN FETCH o.member m" + " JOIN FETCH o.delivery d", Order.class
         ).getResultList();
+    }
+
+    public List<SimpleOrderQueryDto> findOrderDtos() {
+        return em.createQuery(
+                "SELECT new jpabook.jpashop.repository.SimpleOrderQueryDto(o.id, m.name, o.orderDate, o.status, d.address) " +
+                        "FROM Order o" +
+                        " JOIN o.member m" +
+                        " JOIN o.delivery d", SimpleOrderQueryDto.class)
+                        .getResultList();
     }
 }
